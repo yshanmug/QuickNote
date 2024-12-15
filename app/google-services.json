@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718195493604",
+    "project_id": "quick-note-96704",
+    "storage_bucket": "quick-note-96704.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718195493604:android:04af3a34c7f06cb8efbaf1",
+        "android_client_info": {
+          "package_name": "com.yuva.notetakingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6QGmVRGKYSflTCKgDdtbVQ1wYffrJM2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
