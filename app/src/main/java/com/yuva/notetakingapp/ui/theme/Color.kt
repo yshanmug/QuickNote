@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 //Light theme colors
 val MediumSeaGreen = Color(0xff41B06E)
 val MintGreen = Color(0x1B41B06E)
-val Black = Color(0GIT xFF000000)
+val Black = Color(0xFF000000)
 val MediumDarkGrey = Color(0xDA4D4D4D)
 val DarkGrey = Color(0xFFa9a9a9)
 val White = Color(0xC3F6F6F6)
