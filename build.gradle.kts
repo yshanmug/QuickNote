@@ -4,9 +4,8 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
     alias(libs.plugins.dagger.hilt) apply false
-    alias(libs.plugins.google.firebase.crashlytics ) apply false
+    alias(libs.plugins.google.firebase.crashlytics) apply false
     alias(libs.plugins.google.gms.google.services) apply false
-
 
 
 }

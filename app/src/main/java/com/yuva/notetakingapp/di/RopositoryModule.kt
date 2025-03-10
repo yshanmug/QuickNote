@@ -1,4 +1,5 @@
 package com.yuva.notetakingapp.di
+
 import com.yuva.notetakingapp.repository.NoteRepository
 import com.yuva.notetakingapp.repository.NoteRepositoryImp
 import dagger.Binds

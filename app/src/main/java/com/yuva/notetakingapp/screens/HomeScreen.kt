@@ -136,22 +136,23 @@ fun HomeScreen(
                             onSortByTitlePress(!isAscendingByTitle)
                             isAscendingByTitle = !isAscendingByTitle
                         },
-                        colors =  IconButtonDefaults.iconButtonColors( contentColor = MaterialTheme.colorScheme.onPrimary),
+                        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary),
                         interactionSource = interactionSource,
-                      ) {
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.sortbyascdsc),
                             contentDescription = "SortByTime", modifier = Modifier.size(25.dp),
-                            )
+                        )
                     }
 
-                    IconButton(onClick = {
-                        onSortByTimePress(!isAscendingByTime)
-                        isAscendingByTime = !isAscendingByTime
-                    },
-                        modifier = Modifier
-                        ,
-                        colors =  IconButtonDefaults.iconButtonColors( contentColor = MaterialTheme.colorScheme.onPrimary),)
+                    IconButton(
+                        onClick = {
+                            onSortByTimePress(!isAscendingByTime)
+                            isAscendingByTime = !isAscendingByTime
+                        },
+                        modifier = Modifier,
+                        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary),
+                    )
 
                     {
                         Icon(
@@ -193,11 +194,11 @@ fun HomeScreen(
 
                                         } else {
                                             scope.launch {
-                                                snackBarHostState.showSnackbar("Please Select a note to delete")
+                                                snackBarHostState.showSnackbar("Please select a note to delete")
                                             }
                                         }
                                     },
-                                    )
+                                )
                             },
                             properties = PopupProperties(focusable = true),
                             offset = DpOffset(x = 0.dp, y = 15.dp)
@@ -216,37 +217,42 @@ fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .padding(8.dp)
-                    ){
+                    ) {
 
-                      Checkbox(
-                          checked = true,
-                          onCheckedChange = {onNewNoteClicked(true)},
-                          colors = CheckboxDefaults.colors( checkedColor = if(isSystemInDarkTheme())
-                          { MaterialTheme.colorScheme.onPrimary}
-                          else{ MaterialTheme.colorScheme.primary},
-                              uncheckedColor = if(isSystemInDarkTheme())
-                              {MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.6f)}
-                              else
-                              { MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)},
-                              checkmarkColor = if(isSystemInDarkTheme())
-                              {
-                                  MaterialTheme.colorScheme.primary}
-                                      else{
-                        MaterialTheme.colorScheme.onPrimary })
+                        Checkbox(
+                            checked = true,
+                            onCheckedChange = { onNewNoteClicked(true) },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = if (isSystemInDarkTheme()) {
+                                    MaterialTheme.colorScheme.onPrimary
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                },
+                                uncheckedColor = if (isSystemInDarkTheme()) {
+                                    MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.6f)
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                },
+                                checkmarkColor = if (isSystemInDarkTheme()) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onPrimary
+                                }
+                            )
 
-                      )
+                        )
                         Text(
                             text = "To-Do List",
                             modifier = Modifier
                                 .clickable { onNewNoteClicked(true) })
-                        }
+                    }
                 },
 
                 containerColor = Color.Transparent,
                 modifier = Modifier
                     .focusProperties { canFocus = false }
                     .background(
-                        MaterialTheme.colorScheme.background.copy(alpha = 0.8f) // Semi-transparent background
+                        MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
                     )
                     .navigationBarsPadding(),
 
@@ -267,29 +273,30 @@ fun HomeScreen(
             )
         },
 
-    )
+        )
     { innerPadding ->
-
-        Log.d("Noteswithtodoitem", notesWithToDoItems.toString())
-        val isNoteEmpty = notesWithToDoItems.isEmpty()
-        Log.d("isNoteReady", isDataLoaded.toString())
-
         when {
             isDataLoaded -> {
                 Column(
-                    modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier,
-                        color = if(isSystemInDarkTheme()){ MaterialTheme.colorScheme.onPrimary}
-                                else{ MaterialTheme.colorScheme.primary},
+                        color = if (isSystemInDarkTheme()) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        },
                         strokeWidth = 4.dp,
                         strokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap
                     )
                 }
             }
+
             notesWithToDoItems.isEmpty() && !isDataLoaded -> {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -389,7 +396,8 @@ fun HomeScreen(
                                 val unCheckedItems = toDoItems.filter { !it.isChecked }
                                 Log.d("unCheckedItems", unCheckedItems.toString())
                                 val checkedItems = toDoItems.filter { it.isChecked }
-                                val uncheckedToTake = if (checkedItems.isEmpty()) maxItems else maxUnchecked
+                                val uncheckedToTake =
+                                    if (checkedItems.isEmpty()) maxItems else maxUnchecked
                                 val displayedUncheckedItems = unCheckedItems.take(uncheckedToTake)
                                 val remainingSlots = maxItems - displayedUncheckedItems.size
                                 val displayedCheckedItems = checkedItems.take(remainingSlots)
@@ -449,7 +457,7 @@ fun HomeScreen(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GreetingText() {
-        Column {
+    Column {
         TypingTextEffect(text = "{ Quick Note. . . }")
     }
 }
@@ -472,6 +480,7 @@ fun TypingTextEffect(text: String, typingSpeed: Long = 100L) {
         fontWeight = FontWeight.Normal,
         fontSize = 30.sp,
         fontFamily = ranchoFamily,
-        fontStyle = FontStyle.Normal   )
+        fontStyle = FontStyle.Normal
+    )
 }
 

@@ -1,22 +1,18 @@
 package com.yuva.notetakingapp
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
-import org.intellij.lang.annotations.JdkConstants.CursorType
-
 
 
 @Dao
 interface NoteTakingDao {
     @Insert
-    suspend fun insertNote(note: Note)  : (Long)
+    suspend fun insertNote(note: Note): (Long)
 
     @Upsert
     suspend fun insertToDoItem(toDoItem: ToDoItem)
@@ -37,8 +33,8 @@ interface NoteTakingDao {
     suspend fun updateNote(note: Note)
 
     @Transaction
-    @Query("SELECT * FROM Note")
-     fun getAllNotesWithToDoItems(): Flow<List<NoteWithToDoItems>>
+    @Query("select * from Note")
+    fun getAllNotesWithToDoItems(): Flow<List<NoteWithToDoItems>>
 
 }
 

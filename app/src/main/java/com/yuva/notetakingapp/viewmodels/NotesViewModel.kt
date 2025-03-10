@@ -1,14 +1,9 @@
 package com.yuva.notetakingapp.viewmodels
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yuva.notetakingapp.Note
 import com.yuva.notetakingapp.NoteWithToDoItems
 import com.yuva.notetakingapp.ToDoItem
@@ -16,22 +11,13 @@ import com.yuva.notetakingapp.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.lang.Math.random
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(private val noteRepository: NoteRepository) : ViewModel() {
@@ -46,8 +32,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
 
     private var _isDataReady = MutableStateFlow(true)
     val isDataReady = _isDataReady.asStateFlow()
-//    val notesWithToDoItems: LiveData<List<NoteWithToDoItems>> = noteRepository.notesWithToDoItems
-
 
     init {
         getNotes()
@@ -56,9 +40,8 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
 
     private fun getNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            noteRepository.notesWithToDoItems.asFlow().collect() { noteList ->
+            noteRepository.notesWithToDoItems.asFlow().collect { noteList ->
                 _allNotesList.update { noteList }
-                Log.d("NotesPrinted", noteList.toString())
                 delay(300)
                 _isDataReady.value = false
             }
@@ -77,7 +60,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
 
     fun updateToDoItem(toDoItem: ToDoItem) {
         _toDoListItems.value = _toDoListItems.value.map {
-
             if (it.id == toDoItem.id) {
                 toDoItem.copy(isNewNote = false)
                 toDoItem
@@ -106,14 +88,7 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
         viewModelScope.launch(Dispatchers.IO)
         {
             _toDoListItems.value.forEach {
-            }
-            val isNewNote = _toDoListItems.value.all {
-                it.isNewNote
-            }
-
-            _toDoListItems.value.forEach {
                 it.noteId = noteId
-                Log.d("currentItem2", it.toString())
                 if (it.toDoItem.isNotEmpty()) {
                     noteRepository.insertToDoItem(it)
                 }
@@ -125,7 +100,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
     fun insertNote(isToDoList: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             if (isToDoList) {
-                var toDoItems = toDoListItems.value.all { it.toDoItem.isEmpty() }
                 if ((note.value.note.title.isNotEmpty() && _toDoListItems.value.any { it.toDoItem.isNotEmpty() })
                     || (note.value.note.title.isNotEmpty() || _toDoListItems.value.any { it.toDoItem.isNotEmpty() })
                 ) {
@@ -169,7 +143,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
     fun sortNoteByTitle(isAscending: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             val notesForSorting = noteRepository.notesWithToDoItems.value
-            Log.d("notesForSorting", notesForSorting.toString())
             val allTitleEmpty = notesForSorting?.all { it.note.title.isEmpty() } ?: true
             if (notesForSorting != null) {
                 _allNotesList.value =
@@ -204,7 +177,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
                                     it.note.title.lowercase()
                             }
             }
-            Log.d("AfterSorteddd", _allNotesList.value.toString())
         }
     }
 
@@ -212,8 +184,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
     fun sortByTimeCreated(isAscending: Boolean) {
         viewModelScope.launch(Dispatchers.IO)
         {
-            val notesListForSortingByTime = noteRepository.allNotes.first()
-            Log.d("sortNoteByTime: ", notesListForSortingByTime.toString())
             val notesForSortByTime = noteRepository.notesWithToDoItems.asFlow().firstOrNull()
             Log.d("nForSorting", notesForSortByTime.toString())
             if (notesForSortByTime != null) {
@@ -236,7 +206,6 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
 
 
     fun updateTitle(title: String) {
-//        _note.value = note.value.copy(Note(title = title))
         val currentNoteWithToDoItems = _note.value
         _note.value = currentNoteWithToDoItems.copy(
             note = currentNoteWithToDoItems.note.copy(title = title)
@@ -255,6 +224,5 @@ class NotesViewModel @Inject constructor(private val noteRepository: NoteReposit
             noteRepository.delete(noteId)
         }
     }
-
 
 }
